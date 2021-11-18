@@ -1,4 +1,6 @@
 class AccountsController < ApplicationController
+  include Wisper::Publisher
+  
   before_action :set_account, only: [:show, :edit, :update, :destroy]
 
   before_action :authenticate_account!, only: [:index]
@@ -29,22 +31,15 @@ class AccountsController < ApplicationController
       if @account.update(account_params)
         # ----------------------------- produce event -----------------------
         event = {
-          event_name: 'AccountUpdated',
-          data: {
-            public_id: @account.public_id,
-            email: @account.email,
-            full_name: @account.full_name,
-            position: @account.position
-          }
+          public_id: @account.public_id,
+          email: @account.email,
+          full_name: @account.full_name,
+          position: @account.position
         }
-        # Producer.call(event.to_json, topic: 'accounts-stream')
+        broadcast(:account_updated, **event)
 
         if new_role
-          event = {
-            event_name: 'AccountRoleChanged',
-            data: { public_id: @account.public_id, role: new_role }
-          }
-          # Producer.call(event.to_json, topic: 'accounts')
+          broadcast(:account_role_changed, public_id: @account.public_id, role: new_role)
         end
 
         # --------------------------------------------------------------------
@@ -66,13 +61,8 @@ class AccountsController < ApplicationController
     @account.update(active: false, disabled_at: Time.now)
 
     # ----------------------------- produce event -----------------------
-    event = {
-      event_name: 'AccountDeleted',
-      data: { public_id: @account.public_id }
-    }
-    # Producer.call(event.to_json, topic: 'accounts-stream')
+    broadcast(:access_deleted, public_id: @account.public_id)
     # --------------------------------------------------------------------
-
     respond_to do |format|
       format.html { redirect_to root_path, notice: 'Account was successfully destroyed.' }
       format.json { head :no_content }

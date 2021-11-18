@@ -1,0 +1,15 @@
+defaults: &defaults
+  pool: 10
+  connection_timeout: 2
+
+development: &development
+  <<: *defaults
+  hosts:
+    - "localhost:2181"
+  pool: 10
+  chroot: '/bookmate_development'
+
+test:
+  <<: *defaults
+  <<: *development
+  chroot: '/bookmate_test'
