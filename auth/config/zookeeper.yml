@@ -7,9 +7,9 @@ development: &development
   hosts:
     - "localhost:2181"
   pool: 10
-  chroot: '/bookmate_development'
+  chroot: '/uberpopug_development'
 
 test:
   <<: *defaults
   <<: *development
-  chroot: '/bookmate_test'
+  chroot: '/uberpopug_test'
