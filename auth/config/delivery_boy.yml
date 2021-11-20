@@ -7,9 +7,9 @@ defaults: &defaults
 development:
   <<: *defaults
   brokers:
-    - localhost:9092
+    - localhost:29092
 
 test:
   <<: *defaults
   brokers:
-    - localhost:9092
+    - localhost:29092
