@@ -7,6 +7,14 @@ GIT
       racecar
       wisper
 
+GIT
+  remote: https://github.com/zendesk/racecar.git
+  revision: 0281f590c6e7ed60b8a6b7ee3c22e2d6a641ea67
+  specs:
+    racecar (2.4.0)
+      king_konf (~> 1.0.0)
+      rdkafka (~> 0.10.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -87,7 +95,7 @@ GEM
       activesupport (>= 5.0)
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
-    jbuilder (2.11.2)
+    jbuilder (2.11.3)
       activesupport (>= 5.0.0)
     king_konf (1.0.0)
     listen (3.7.0)
@@ -107,13 +115,11 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.12.5-x86_64-darwin)
       racc (~> 1.4)
+    oj (3.13.9)
     pg (1.2.3)
     puma (5.5.2)
       nio4r (~> 2.0)
     racc (1.6.0)
-    racecar (2.4.0)
-      king_konf (~> 1.0.0)
-      rdkafka (~> 0.10.0)
     rack (2.2.3)
     rack-mini-profiler (2.3.3)
       rack (>= 1.2.0)
@@ -172,7 +178,7 @@ GEM
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
-    sprockets-rails (3.3.0)
+    sprockets-rails (3.4.1)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
@@ -180,7 +186,7 @@ GEM
     tilt (2.0.10)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
-    web-console (4.1.0)
+    web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
@@ -205,10 +211,13 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
+  delivery_boy
   jbuilder (~> 2.7)
   listen (~> 3.3)
+  oj
   pg (~> 1.1)
   puma (~> 5.0)
+  racecar!
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.4, >= 6.1.4.1)
   sass-rails (>= 6)

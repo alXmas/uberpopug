@@ -1,8 +1,0 @@
-#!/bin/bash
-
-basename="$(basename "$0")"
-name="${basename##racecar_}"
-consumer_name='EventsConsumer'
-absolute_path="/Users/xmas/code/uberpopug/tasks/script/"
-dir="$(dirname "$absolute_path")"
-source "${dir}/racecar_utils.sh"
