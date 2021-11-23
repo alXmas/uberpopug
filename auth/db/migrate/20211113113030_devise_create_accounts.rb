@@ -14,6 +14,7 @@ class DeviseCreateAccounts < ActiveRecord::Migration[6.1]
       ## Account information
       t.string   :full_name
       t.string   :position
+      t.string   :role
 
       ## Account information
       t.boolean   :active, default: true

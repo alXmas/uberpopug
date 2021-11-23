@@ -16,8 +16,23 @@ ActiveRecord::Schema.define(version: 2021_11_13_121242) do
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-# Could not dump table "accounts" because of following StandardError
-#   Unknown type 'account_roles' for column 'role'
+  create_table "accounts", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.uuid "public_id", default: -> { "gen_random_uuid()" }, null: false
+    t.string "full_name"
+    t.string "position"
+    t.string "role"
+    t.boolean "active", default: true
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "disabled_at"
+    t.index ["email"], name: "index_accounts_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
+  end
 
   create_table "oauth_access_grants", force: :cascade do |t|
     t.bigint "resource_owner_id", null: false
