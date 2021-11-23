@@ -94,11 +94,10 @@ class EventsConsumer < Racecar::Consumer
 
   def process(message)
     parsed_message = decode(message.value)
-    subscriber = parsed_message.fetch(:subscriber)
     event = parsed_message.fetch(:event)
     args = parsed_message.fetch(:args)
 
-    Object.const_get(subscriber).public_send(event, *args)
+    #  Тут приходят события из кафки
   end
 
   private
