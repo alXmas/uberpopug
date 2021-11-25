@@ -24,6 +24,12 @@ gem 'webpacker'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
+#Events
+gem 'wisper'
+gem 'wisper_kafka', github: 'bookmate/wisper_kafka'
+gem 'zk'
+
+#Auth
 gem 'devise'
 gem 'doorkeeper'
 

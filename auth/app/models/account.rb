@@ -1,6 +1,6 @@
 class Account < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  include Wisper::Publisher
+  
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
@@ -26,15 +26,12 @@ class Account < ApplicationRecord
 
     # ----------------------------- produce event -----------------------
     event = {
-      event_name: 'AccountCreated',
-      data: {
-        public_id: account.public_id,
-        email: account.email,
-        full_name: account.full_name,
-        position: account.position
-      }
+      public_id: account.public_id,
+      email: account.email,
+      full_name: account.full_name,
+      position: account.position
     }
-    # Producer.call(event.to_json, topic: 'accounts-stream')
-    # --------------------------------------------------------------------
+
+    broadcast(:account_created, **event)
   end
 end

@@ -1,0 +1,15 @@
+# These config values will be shared by all environments but can be overridden.
+defaults: &defaults
+  client_id: 'uberpopug'
+  compression_codec: 'gzip'
+  # compression_threshold: 1 # default value
+
+development:
+  <<: *defaults
+  brokers:
+    - localhost:29092
+
+test:
+  <<: *defaults
+  brokers:
+    - localhost:29092
