@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
-class ApplicationConsumer < Racecar::Consumer
+class EventsConsumer < Racecar::Consumer
+  self.group_id = 'uberpopug-wisper-consumer'
+  subscribes_to 'wisper_events', start_from_beginning: false
+
   Measured = Struct.new(:message, :statsd) do
     MESSAGE_BYTES = 'kafka_consumer_message_bytes'
     REQUEST_LATENCY = 'kafka_consumer_request_latency_seconds'
@@ -90,11 +93,11 @@ class ApplicationConsumer < Racecar::Consumer
   end
 
   def process(message)
-    Chewy.strategy(:atomic) do
-      Logged.new(message, true).call do
-        Measured.new(message, STATSD).call { process_message(message) }
-      end
-    end
+    parsed_message = decode(message.value)
+    event = parsed_message.fetch(:event)
+    args = parsed_message.fetch(:args)
+
+    #  Тут приходят события из кафки
   end
 
   private

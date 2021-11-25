@@ -1,12 +1,12 @@
-defaults: &defaults
+common: &common
   client_id: "auth"
 
 development:
-  <<: *defaults
+  <<: *common
   brokers:
     - localhost:29092
 
 test:
-  <<: *defaults
+  <<: *common
   brokers:
     - localhost:29092

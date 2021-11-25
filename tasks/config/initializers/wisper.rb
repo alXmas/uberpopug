@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Wisper.subscribe(AuthListener, 
+Wisper.subscribe(AccountListener, 
   on: [
     :account_updated,
     :account_role_changed,
