@@ -42,9 +42,9 @@ class AccountsController < ApplicationController
         if new_role
           event = {
             event_name: 'AccountRoleChanged',
-            data: { public_id: public_id, role: role }
+            data: { public_id: @account.public_id, role: new_role }
           }
-          Producer.call(event.to_json, topic: 'accounts')
+          # Producer.call(event.to_json, topic: 'accounts')
         end
 
         # --------------------------------------------------------------------
