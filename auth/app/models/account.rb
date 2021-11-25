@@ -1,6 +1,4 @@
 class Account < ApplicationRecord
-  include Wisper::Publisher
-  
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
@@ -26,12 +24,19 @@ class Account < ApplicationRecord
 
     # ----------------------------- produce event -----------------------
     event = {
-      public_id: account.public_id,
-      email: account.email,
-      full_name: account.full_name,
-      position: account.position
+      event_id: SecureRandom.uuid,
+      event_version: 1,
+      event_time: Time.now.to_s,
+      producer: 'auth_service',
+      event_name: 'AccountCreated',
+      data: {
+        public_id: account.public_id,
+        email: account.email,
+        full_name: account.full_name,
+        position: account.position
+      }
     }
 
-    broadcast(:account_created, **event)
+    # --------------------------------------------------------------------
   end
 end

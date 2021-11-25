@@ -13,25 +13,19 @@
 ActiveRecord::Schema.define(version: 2021_11_13_121242) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.uuid "public_id", default: -> { "gen_random_uuid()" }, null: false
+    t.string "email"
+    t.string "password_digest"
     t.string "full_name"
-    t.string "position"
+    t.string "state"
     t.string "role"
-    t.boolean "active", default: true
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.string "position"
+    t.uuid "public_id", default: -> { "gen_random_uuid()" }, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.datetime "disabled_at"
-    t.index ["email"], name: "index_accounts_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
+    t.index ["email"], name: "index_accounts_on_email"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -76,6 +70,8 @@ ActiveRecord::Schema.define(version: 2021_11_13_121242) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  add_foreign_key "oauth_access_grants", "accounts", column: "resource_owner_id"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
+  add_foreign_key "oauth_access_tokens", "accounts", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
 end
