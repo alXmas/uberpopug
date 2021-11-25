@@ -24,11 +24,10 @@ class AccountsController < ApplicationController
   # PATCH/PUT /accounts/1.json
   def update
     respond_to do |format|
-      new_role = @account.role != account_params[:role] ? account_params[:role] : nil
+        new_role = @account.role != account_params[:role] ? account_params[:role] : nil
 
-      if @account.update(account_params)
-        # ----------------------------- produce event -----------------------
         event = {
+          **account_event_data,
           event_name: 'AccountUpdated',
           data: {
             public_id: @account.public_id,
@@ -37,17 +36,6 @@ class AccountsController < ApplicationController
             position: @account.position
           }
         }
-        # Producer.call(event.to_json, topic: 'accounts-stream')
-
-        if new_role
-          event = {
-            event_name: 'AccountRoleChanged',
-            data: { public_id: public_id, role: role }
-          }
-          Producer.call(event.to_json, topic: 'accounts')
-        end
-
-        # --------------------------------------------------------------------
 
         format.html { redirect_to root_path, notice: 'Account was successfully updated.' }
         format.json { render :index, status: :ok, location: @account }
@@ -67,11 +55,10 @@ class AccountsController < ApplicationController
 
     # ----------------------------- produce event -----------------------
     event = {
+      **account_event_data,
       event_name: 'AccountDeleted',
       data: { public_id: @account.public_id }
     }
-    # Producer.call(event.to_json, topic: 'accounts-stream')
-    # --------------------------------------------------------------------
 
     respond_to do |format|
       format.html { redirect_to root_path, notice: 'Account was successfully destroyed.' }
@@ -80,6 +67,15 @@ class AccountsController < ApplicationController
   end
 
   private
+
+    def account_event_data
+      {
+        event_id: SecureRandom.uuid,
+        event_version: 1,
+        event_time: Time.now.to_s,
+        producer: 'auth_service',
+      }
+    end
 
     def current_account
       if doorkeeper_token
@@ -96,5 +92,13 @@ class AccountsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def account_params
       params.require(:account).permit(:full_name, :role)
+    end
+
+    def produce_be_event(public_id, role)
+      event = {
+        **account_event_data,
+        event_name: 'AccountRoleChanged',
+        data: { public_id: public_id, role: role }
+      }
     end
 end
