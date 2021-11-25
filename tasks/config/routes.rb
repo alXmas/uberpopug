@@ -1,3 +1,9 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  root 'tasks#index'
+  resources :tasks, only: %i[new create] do
+    post :reassign, on: :collection
+    post :complete, on: :member
+  end
+  post 'auth/:provider', to: 'auth#request', as: :auth_request
+  get 'auth/:provider/callback', to: 'auth#callback', as: :callback_auth
 end

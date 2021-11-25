@@ -10,29 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_23_052503) do
+ActiveRecord::Schema.define(version: 2021_11_25_043137) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.uuid "public_id", default: -> { "gen_random_uuid()" }, null: false
+    t.string "email"
     t.string "full_name"
-    t.string "position"
     t.string "role"
+    t.string "public_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.datetime "disabled_at"
   end
 
   create_table "tasks", force: :cascade do |t|
-    t.uuid "public_id", default: -> { "gen_random_uuid()" }, null: false
     t.string "description"
     t.string "status"
+    t.uuid "public_id", default: -> { "gen_random_uuid()" }, null: false
+    t.bigint "employee_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["employee_id"], name: "index_tasks_on_employee_id"
   end
 
+  add_foreign_key "tasks", "accounts", column: "employee_id"
 end
