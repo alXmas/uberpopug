@@ -1,4 +1,6 @@
 class Account < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
@@ -36,7 +38,7 @@ class Account < ApplicationRecord
         position: account.position
       }
     }
-
+    EventProducer.call(event: event, topic: 'accounts-stream')
     # --------------------------------------------------------------------
   end
 end
