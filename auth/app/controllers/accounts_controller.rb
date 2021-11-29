@@ -36,6 +36,7 @@ class AccountsController < ApplicationController
             position: @account.position
           }
         }
+        EventProducer.call(event: event, topic: 'accounts-stream')
 
         format.html { redirect_to root_path, notice: 'Account was successfully updated.' }
         format.json { render :index, status: :ok, location: @account }
@@ -59,6 +60,7 @@ class AccountsController < ApplicationController
       event_name: 'AccountDeleted',
       data: { public_id: @account.public_id }
     }
+    EventProducer.call(event: event, topic: 'accounts-stream')
 
     respond_to do |format|
       format.html { redirect_to root_path, notice: 'Account was successfully destroyed.' }
@@ -100,5 +102,7 @@ class AccountsController < ApplicationController
         event_name: 'AccountRoleChanged',
         data: { public_id: public_id, role: role }
       }
+
+      EventProducer.call(event: event, topic: 'accounts')
     end
 end

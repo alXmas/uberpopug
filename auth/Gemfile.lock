@@ -256,7 +256,7 @@ DEPENDENCIES
   sass-rails (>= 6)
   spring
   tzinfo-data
-  waterdrop (= 1.4.4)
+  waterdrop (~> 1.4)
   web-console (>= 4.1.0)
   webpacker
 
