@@ -13,16 +13,19 @@
 ActiveRecord::Schema.define(version: 2021_11_13_121242) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string "email"
-    t.string "password_digest"
-    t.string "full_name"
-    t.string "state"
-    t.string "role"
-    t.string "position"
+    t.string "encrypted_password", default: "", null: false
     t.uuid "public_id", default: -> { "gen_random_uuid()" }, null: false
+    t.string "full_name"
+    t.string "position"
+    t.boolean "active", default: true
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_accounts_on_email"
